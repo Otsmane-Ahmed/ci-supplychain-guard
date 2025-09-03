@@ -1,0 +1,3 @@
+id,source,package_name,version_or_tag,commit_hash,changed_files,lifecycle_scripts,suspicious_tokens_used,env_access_patterns,network_calls_static,binary_blobs_added,obfuscation_indicators,dynamic_observed_flags,label,label_confidence,source_evidence,sanitized_poc,collected_date,notes
+sim-001,manual-sim,simulated-malware,1.0.0,none,package.json|malicious.js,yes,true,true,0,pending,simulated,10,Created manually to mimic Shai-Hulud behavior
+ben-001,npm,lodash,latest,none,none,no,false,false,0,none,benign,10,Control sample

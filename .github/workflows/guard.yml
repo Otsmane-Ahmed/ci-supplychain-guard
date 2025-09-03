@@ -1,0 +1,53 @@
+name: CI Supply Chain Guard
+
+on:
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  supply-chain-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # We need history to check changes
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests pyyaml
+
+      - name: Set up Docker Sandbox
+        # In a real setup, we would install sysbox/proot here.
+        # For this prototype, we use standard Docker which is pre-installed.
+        run: echo "Docker is ready."
+
+      - name: Run Guard Pipeline
+        id: guard
+        run: |
+          # Pass the current directory (.) as the target
+          python3 main_guard.py .
+        continue-on-error: true # Allow us to handle the failure manually
+
+      - name: Post PR Comment
+        if: steps.guard.outcome == 'failure'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: " **CI GUARD BLOCK:** Malicious patterns detected in this PR. Check logs for details."
+            })
+            core.setFailed("Supply Chain Attack Blocked")
