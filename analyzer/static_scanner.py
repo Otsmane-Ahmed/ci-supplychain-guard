@@ -56,7 +56,8 @@ def scan_file(filepath):
                     note = ""
                     
                     if not is_reachable:
-                        weight = int(weight / 2)
+                        # FIX: Dead code is now worth only 1 point (Noise Reduction)
+                        weight = 1
                         note = "(dead code)"
                     
                     hits.append(f"{rule['id']} {note}".strip())
@@ -78,6 +79,7 @@ def scan_directory(target_dir):
             if score > 0:
                 report["total_score"] += score
                 report["details"].append({"file": filepath, "score": score, "rules": hits})
-                print(f"  Detected: {file} | Score: {score} | Rules: {hits}")
+                # Only print distinct hits to reduce noise
+                # print(f"  Detected: {file} | Score: {score} | Rules: {hits}")
 
     return report
