@@ -46,7 +46,7 @@ OUTPUT_DIR = PROJECT_ROOT / "full_test" / "npm_results"
 ZIP_PASSWORD = b"infected"
 
 # Default batch size
-DEFAULT_BATCH_SIZE = 500
+DEFAULT_BATCH_SIZE = 50
 
 # ============================================================================
 # OUTPUT FILES
