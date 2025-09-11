@@ -14,10 +14,15 @@ RULES = [
     {"id": "SA-004", "name": "Process Spawning", "pattern": r"(child_process\.exec|spawn|os\.system|subprocess\.call)", "weight": 7},
     {"id": "SA-005", "name": "Binary Blob", "pattern": r"\.(exe|dll|node|so)$", "weight": 6, "scope": "ext"},
     {"id": "SA-007", "name": "Dynamic Import", "pattern": r"(require|import)\(.*$\{", "weight": 5},
-    {"id": "SA-008", "name": "Lifecycle Hook", "pattern": r"(preinstall|postinstall)", "weight": 3, "scope": "name"},
+    {"id": "SA-008", "name": "Lifecycle Hook", "pattern": r"(preinstall|postinstall)", "weight": 5, "scope": "name"},
     {"id": "SA-009", "name": "Suspicious IP", "pattern": r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", "weight": 7},
     {"id": "SA-010", "name": "Sensitive Write", "pattern": r"(/etc/hosts|~/\.ssh|\.npmrc)", "weight": 9},
 ]
+
+DANGEROUS_LIFECYCLE_PATTERN = re.compile(
+    r'"(preinstall|postinstall)"\s*:\s*"[^"]*\b(curl|wget|bash|sh|node\s+-e|python|nc|eval)\b',
+    re.IGNORECASE
+)
 
 def scan_file(filepath):
     hits = []
@@ -40,8 +45,12 @@ def scan_file(filepath):
             
             if filename == "package.json":
                 if "preinstall" in content or "postinstall" in content:
-                     hits.append("SA-008")
-                     score += 3
+                    hits.append("SA-008")
+                    score += 5
+                    
+                    if DANGEROUS_LIFECYCLE_PATTERN.search(content):
+                        hits.append("SA-011")
+                        score += 8
 
             for rule in RULES:
                 if rule.get("scope"): continue
