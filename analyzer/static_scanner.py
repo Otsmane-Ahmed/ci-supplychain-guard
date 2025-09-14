@@ -9,14 +9,16 @@ except ImportError:
 
 RULES = [
     {"id": "SA-001", "name": "Shell Download", "pattern": r"(curl|wget|fetch).{0,50}\|\s*(sh|bash)", "weight": 10},
-    {"id": "SA-002", "name": "Secret Exfiltration", "pattern": r"process\.env.*(https?\.get|axios|fetch|net\.connect)", "weight": 10},
-    {"id": "SA-003", "name": "Obfuscated Code", "pattern": r"(Buffer\.from\(.*base64|eval\(.*atob)", "weight": 8},
-    {"id": "SA-004", "name": "Process Spawning", "pattern": r"(child_process\.exec|spawn|os\.system|subprocess\.call)", "weight": 7},
+    {"id": "SA-002", "name": "Secret Exfiltration", "pattern": r"(os\.userInfo|os\.hostname|process\.env).{0,100}(https|http|dns|net\.connect|fetch|axios)", "weight": 8},
+    {"id": "SA-003", "name": "Obfuscated Code", "pattern": r"(Buffer\.from\(.*base64|eval\(.*atob|atob\(|btoa\()", "weight": 8},
+    {"id": "SA-004", "name": "Process Spawning", "pattern": r"(child_process|\.exec\(|\.spawn\(|os\.system|subprocess|\.popen)", "weight": 7},
     {"id": "SA-005", "name": "Binary Blob", "pattern": r"\.(exe|dll|node|so)$", "weight": 6, "scope": "ext"},
-    {"id": "SA-007", "name": "Dynamic Import", "pattern": r"(require|import)\(.*$\{", "weight": 5},
+    {"id": "SA-006", "name": "DNS Exfiltration", "pattern": r"dns\.(resolve|lookup).{0,50}(userInfo|hostname|username)", "weight": 9},
+    {"id": "SA-007", "name": "Dynamic Import", "pattern": r"(require|import)\(.*\$\{", "weight": 5},
     {"id": "SA-008", "name": "Lifecycle Hook", "pattern": r"(preinstall|postinstall)", "weight": 5, "scope": "name"},
-    {"id": "SA-009", "name": "Suspicious IP", "pattern": r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", "weight": 7},
-    {"id": "SA-010", "name": "Sensitive Write", "pattern": r"(/etc/hosts|~/\.ssh|\.npmrc)", "weight": 9},
+    {"id": "SA-009", "name": "Suspicious Domain", "pattern": r"(oastify\.com|burpcollaborator|interact\.sh|requestbin|pipedream)", "weight": 10},
+    {"id": "SA-010", "name": "Sensitive Write", "pattern": r"(\/etc\/|\.ssh|\.bashrc|\.npmrc|\.aws)", "weight": 9},
+    {"id": "SA-012", "name": "System Recon", "pattern": r"(os\.userInfo|os\.hostname|os\.platform|os\.homedir)", "weight": 4},
 ]
 
 DANGEROUS_LIFECYCLE_PATTERN = re.compile(
