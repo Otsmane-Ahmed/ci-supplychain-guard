@@ -11,7 +11,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-DATASET_BASE = "../dataset/private_raw/datadog_malware/samples/pypi"
+DATASET_BASE = "../../dataset/private_raw/datadog_malware/samples/pypi"
 OUTPUT_DIR = "pypi_results"
 TEMP_DIR = "temp_extracted"
 BATCH_SIZE = 50
