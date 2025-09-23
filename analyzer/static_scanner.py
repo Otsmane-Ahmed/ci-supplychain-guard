@@ -18,12 +18,22 @@ RULES = [
     {"id": "SA-008", "name": "Lifecycle Hook", "pattern": r"(preinstall|postinstall)", "weight": 5, "scope": "name"},
     {"id": "SA-009", "name": "Suspicious Domain", "pattern": r"(oastify\.com|burpcollaborator|interact\.sh|requestbin|pipedream)", "weight": 10},
     {"id": "SA-010", "name": "Sensitive Write", "pattern": r"(\/etc\/|\.ssh|\.bashrc|\.npmrc|\.aws)", "weight": 9},
-    {"id": "SA-012", "name": "System Recon", "pattern": r"(os\.userInfo|os\.hostname|os\.platform|os\.homedir)", "weight": 4},
+    {"id": "SA-013", "name": "Python Exec", "pattern": r"\bexec\s*\(|\beval\s*\(|\bcompile\s*\(", "weight": 8},
+    {"id": "SA-014", "name": "Python Dynamic Import", "pattern": r"__import__\s*\(", "weight": 6},
+    {"id": "SA-015", "name": "Python Env Access", "pattern": r"os\.environ|os\.getenv", "weight": 4},
+    {"id": "SA-016", "name": "Python Socket", "pattern": r"socket\.socket\s*\(", "weight": 7},
+    {"id": "SA-017", "name": "Python Base64", "pattern": r"base64\.(b64decode|decodebytes)", "weight": 5},
 ]
 
 DANGEROUS_LIFECYCLE_PATTERN = re.compile(
     r'"(preinstall|postinstall)"\s*:\s*"[^"]*\b(curl|wget|bash|sh|node\s+-e|python|nc|eval)\b',
     re.IGNORECASE
+)
+
+# New: Detect setup.py with dangerous install commands
+DANGEROUS_SETUP_PATTERN = re.compile(
+    r"(cmdclass|install_requires|setup\s*\().{0,500}(exec|eval|subprocess|os\.system|__import__|requests\.get|urllib)",
+    re.IGNORECASE | re.DOTALL
 )
 
 def scan_file(filepath):
@@ -40,6 +50,9 @@ def scan_file(filepath):
                 score += rule["weight"]
             elif rule.get("scope") == "name" and filename == "package.json":
                 pass 
+            elif rule.get("scope") == "name" and filename == "setup.py":
+                # setup.py is always interesting
+                pass
 
         # Content checks
         with open(filepath, "r", errors="ignore") as f:
@@ -53,6 +66,12 @@ def scan_file(filepath):
                     if DANGEROUS_LIFECYCLE_PATTERN.search(content):
                         hits.append("SA-011")
                         score += 8
+            
+            # New: Smart checks for setup.py
+            if filename == "setup.py":
+                if DANGEROUS_SETUP_PATTERN.search(content):
+                    hits.append("SA-011") # Reuse ID for dangerous install
+                    score += 8
 
             for rule in RULES:
                 if rule.get("scope"): continue
@@ -70,6 +89,11 @@ def scan_file(filepath):
                         # FIX: Dead code is now worth only 1 point (Noise Reduction)
                         weight = 1
                         note = "(dead code)"
+                    else:
+                        # New: Increase weight for critical Python files (setup.py, __init__.py)
+                        # If a rule like Process Spawning (SA-004) is found in setup.py, it's very suspicious
+                        if filename in ["setup.py", "__init__.py"] and rule["id"] in ["SA-004", "SA-013"]:
+                            weight = 10  # Auto-BLOCK weight similar to SA-001
                     
                     hits.append(f"{rule['id']} {note}".strip())
                     score += weight
