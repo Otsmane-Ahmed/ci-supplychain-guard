@@ -12,7 +12,7 @@ We utilize a 70/15/15 split for training (rule tuning), validation, and testing.
 | :--- | :--- | :--- | :--- |
 | **Simulated Samples** | Malicious | 150 | Generated samples (e.g., `simulated_shai_hulud`) testing specific TTPs. |
 | **Benign Controls** | Safe | 800 | Popular NPM packages (e.g., `lodash`, `express`) to test False Positives. |
-| **Backstabber / OSPtrack** | Ground Truth | 30+ | **** Real-world historical attacks for validation (e.g., `event-stream`). |
+| **Backstabber / OSPtrack** | Ground Truth | 30+ | Real-world historical attacks for validation (e.g., `event-stream`). |
 
 ## 3. Experiment Types
 1.  **Static-Only Detection:** Measure detection rate using only Regex+AST (No Sandbox).

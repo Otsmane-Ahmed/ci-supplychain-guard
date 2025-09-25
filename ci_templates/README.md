@@ -12,8 +12,8 @@ This directory contains the architectural specifications for integrating the CI-
     1.  **Fetch:** Identify changed files in a Pull Request.
     2.  **Scan:** Run Static Analysis.
     3.  **Static Eval:**
-        * Score $\le$ 3: **PASS** (Green)
-        * Score $\ge$ 10: **BLOCK** (Red)
+        * Score <= 3: **PASS** (Green)
+        * Score >= 10: **BLOCK** (Red)
         * Score 4-9: **TRIGGER SANDBOX** (Yellow)
     4.  **Dynamic Eval:** If sandboxed, check for honeytoken access.
     5.  **Final Decision:** Block malicious behavior or Warn on suspicious non-events.

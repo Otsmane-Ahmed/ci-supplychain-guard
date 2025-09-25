@@ -55,11 +55,14 @@ python3 main_guard.py ./path/to/package
 
 
 
-## Evaluation Results
+### Evaluation Summary
 
-* **True Positive Rate (TPR):** 100% detection against simulated exfiltration attacks.
+| Ecosystem | Samples Tested | Detection Rate | Notes |
+|:----------|:---------------|:---------------|:------|
+| **NPM** | 15,059 | **89.6%** | Excellent detection of lifecycle hooks and obfuscation. |
+| **PyPI** | 2,257 | **82.2%** | Strong detection of `setup.py` abuse and dynamic execution. |
 
-* **False Positive Rate (FPR):** Reduced falsing on non-executable code using AST analysis.
+> **Note:** Detection rates significantly improved after implementing specific rules for lifecycle hooks (NPM) and setup script execution (PyPI). See [EVALUATION_REPORT.md](full_test/EVALUATION_REPORT.md) for full details.
 
 
 

@@ -5,8 +5,11 @@ __pycache__/
 .DS_Store
 dataset/private_raw/
 sandbox/logs/
-full_test/npm_results/
-full_test/pypi_results/
+full_test/npm/npm_results/
+full_test/pypi/pypi_results/
 full_test/temp_extracted/
 *.tgz
 checkpoint.json
+research_papers/
+.vscode/
+txt.txt

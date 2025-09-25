@@ -51,7 +51,7 @@ Based on analyzed incidents (e.g., Shai-Hulud, warbeast2000), the adversary aims
 
 ## 3. Evidence Log & Taxonomy
 
-### Taxonomy Refinement (Antigravity Update)
+### Taxonomy Refinement
 To ensure academic rigor, analysis distinguishes between **Technique (TTP)** and **Objective (Impact)**.
 * **Technique:** The code pattern (e.g., `process.env` access, `dns.lookup`, `fs.read(~/.ssh)`).
 * **Objective:** The goal (e.g., Credential Harvesting, Lateral Movement).

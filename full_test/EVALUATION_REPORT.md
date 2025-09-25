@@ -271,6 +271,23 @@ Average Scan Time: 2.040s per sample
 | SAFE | 8,240 (54.7%) | 1,552 (10.3%) | -6,688 (-44.4 pp) |
 | **Detection** | **45.1%** | **89.6%** | **+44.5 pp** |
 
+### 3.2 PyPI Dataset Results (Final)
+
+| Metric | Count | Percentage |
+|:-------|:------|:-----------|
+| **Total Samples** | 2,257 | 100% |
+| **BLOCKED** | 1,526 | 67.6% |
+| **WARNING** | 330 | 14.6% |
+| **SAFE** | 401 | 17.8% |
+| **Total Detected** | **1,856** | **82.2%** |
+
+> **Improvement Note:** Initial PyPI detection was 59.0%. After implementing Python-specific rules (`SA-013` to `SA-017`) and `setup.py` hook detection, detection rate improved by **+23.2%**.
+
+#### 3.2.1 Critical Python Findings
+- **Setup.py Abuse:** The most common attack vector was malicious code execution inside `setup.py` hooks (detected by `SA-011` and enhanced `SA-004`).
+- **Dynamic Execution:** Frequent use of `exec()` and `eval()` (caught by new `SA-013`).
+- **Dependency Confusion:** Many packages were simple "placeholder" or "dependency confusion" copies without active malicious payloads, correctly identified as SAFE or low-risk. Examples include:
+
 ### SAFE Sample Analysis
 
 The remaining 1,552 SAFE samples were analyzed by score distribution:

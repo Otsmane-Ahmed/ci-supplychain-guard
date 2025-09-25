@@ -16,7 +16,7 @@ Unlike standard scanners, this research introduces three key innovations:
 
 ## 4. Key Results
 * **Detection Rate:** Achieved **100% TPR** against simulated exfiltration attacks using the Deception Sandbox.
-* **False Positive Reduction:** Reachability analysis reduced false flags on non-executable code (Score 10 $\rightarrow$ 5).
+* **False Positive Reduction:** Reachability analysis reduced false flags on non-executable code (Score 10 -> 5).
 * **Performance:** Average scan time < 45 seconds per package.
 
 ## 5. Impact

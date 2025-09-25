@@ -59,7 +59,7 @@ def main():
         tpr = (stats["BLOCKED"] / stats["TOTAL"]) * 100
         print(f"[RESULTS] Detection Rate (TPR): {tpr:.1f}% ({stats['BLOCKED']}/{stats['TOTAL']})")
     else:
-        print("[!] No samples found.")
+        print("No samples found.")
 
 if __name__ == "__main__":
     main()
