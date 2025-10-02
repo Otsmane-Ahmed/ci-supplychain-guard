@@ -72,3 +72,13 @@ python3 main_guard.py ./path/to/package
 
 * [Evaluation Plan](docs/EVALUATION_PLAN.md)
 
+
+## Installation
+
+```bash
+git clone https://github.com/Otsmane-Ahmed/ci-supplychain-guard.git
+cd ci-supplychain-guard
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
