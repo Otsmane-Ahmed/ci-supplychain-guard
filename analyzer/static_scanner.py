@@ -1,3 +1,5 @@
+# Enhanced static analysis scanner
+
 import os
 import re
 import sys
