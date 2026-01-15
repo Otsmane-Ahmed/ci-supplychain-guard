@@ -1,3 +1,6 @@
+# Security-hardened sandbox
+# Security-hardened sandbox
+
 # Use a standard Node.js image (common target for supply chain attacks)
 FROM node:18-slim
 
